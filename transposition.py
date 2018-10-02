@@ -75,6 +75,46 @@ def railCrypt (text):
     for i in range(kljuc):
         tajnopis+= ''.join(tab[i])
     return tajnopis, kljuc
+    
+def narediNakljucnoSteviloDolzine(n):
+    #zacetek= 10**(n-1)
+    #konec= (10**n)-1
+    #stevilo = random.randint(zacetek, konec)
+    
+    #POPRAVI IN NAREDI PRAV!!!!
+    
+    
+    return stevilo
+    
+
+def transpozicijaStolpcev (text):
+    dolzinaBesedila=len(text)
+    kljuc= random.randint(2, int (dolzinaBesedila/2))
+    visina=int (dolzinaBesedila/kljuc)
+    tajnopis= ""
+    tab=np.array([np.array(["" for i in range(kljuc)]) for j in range (visina)])
+    vis=0
+    dolz=0
+    for i in range(dolzinaBesedila):
+        tab[vis][dolz]=text[i]
+        dolz+=1
+        if dolz == kljuc:
+            dolz=0
+            vis+=1
+    if visina * kljuc != dolzinaBesedila:
+        ostanek= dolzinaBesedila- visina * kljuc
+        #nafilaj tolko random črk notr
+    #naredi random število dolgo toliko, kolikor je ključ                                   DONE
+    kljuc2= narediNakljucnoSteviloDolzine(kljuc)
+    #beri tiste stolpce, daj jih v spremenljivko tajnopis
+    for x in range(kljuc):
+        spr=str(kljuc2)[0]
+        tajnopis=tab[:,int (spr)]
+    
+    return (tajnopis, kljuc2)
+    
+        
+    
 
 @app.route('/')
 def index():
@@ -85,6 +125,8 @@ def play():
     cistopis = izberiBesedilo()
     cistopis = dajVCaps(cistopis)
     tajnopis,kljuc = railCrypt(cistopis)
+    
+    cistopis2= cistopis.upper().replace(" ", "")
     
     return render_template("transposition.play.html", name=tajnopis, key=kljuc)
 

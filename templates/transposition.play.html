@@ -20,8 +20,9 @@
 					<br>
 					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR V VELIKIH TISKANIH ČRKAH, BREZ LOČIL IN PRESLEDKOV" style="border: 2px solid black; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px;">
 					<button type="button" onclick="pravilenOdgovor()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Potrdi</button>
-					<p id="pravilnost"></p>
 					<br>
+					<br>
+					<p id="pravilnost"></p>
 					<button type="button" id="namig" onclick="prikaziNamig()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Namig</button> <b id="opozorilo">Pozor: ob kliku na gumb "Namig" se ti bo od končnega rezultata odbilo X točk!</b>
 					<p id="prvi"></p>
 					<p id="drugi"></p>
@@ -36,7 +37,7 @@
 								steviloKlikov++;
 							}
 							else if (steviloKlikov==1) {
-								document.getElementById("drugi").innerHTML={{ key }};
+								document.getElementById("drugi").innerHTML= {{ key }};
 								steviloKlikov++;
 							}
 							else if (steviloKlikov==2) {
@@ -51,15 +52,25 @@
 						function pravilenOdgovor() {
 							
 							//poglejmo=poglejmo.replace(/\s/g, '');
-							if (document.getElementById("vnosOdgovora").innerHTML == "") {		//odg je pravilen
+							
+							//var cisto= {{ cistoo }};																		//WHY WONT IT WORK?!?!
+							var cisto="A";
+							var njihovo= document.getElementById("vnosOdgovora").innerHTML;
+							//document.getElementById("opozorilo").innerHTML= {{ cistoo }};
+							if (njihovo === cisto) {																	//odg je pravilen
 								document.getElementById("namig").style.display="none";
 								document.getElementById("prvi").style.display="none";
 								document.getElementById("drugi").style.display="none";
 								document.getElementById("tretji").style.display="none";
 								document.getElementById("cetrti").style.display="none";
+								document.getElementById("opozorilo").style.display="none";
 								
-								document.getElementById("opozorilo").innerHTML="Čestitam! Odgovor je pravilen.";
-								document.getElementById("opozorilo").style.color="green";
+								document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
+								document.getElementById("pravilnost").style.color="green";
+							}
+							else {																						//odg je napacen
+								document.getElementById("pravilnost").innerHTML="Odgovor je napačen!";
+								document.getElementById("pravilnost").style.color="red";
 							}
 						}
 					</script>
