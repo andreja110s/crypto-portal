@@ -53,11 +53,11 @@
 							
 							//poglejmo=poglejmo.replace(/\s/g, '');
 							
-							//var cisto= {{ cistoo }};																		//WHY WONT IT WORK?!?!
-							var cisto="A";
-							var njihovo= document.getElementById("vnosOdgovora").innerHTML;
+							var cisto= "{{ cistoo }}";																		//WHY WONT IT WORK?!?!
+							//var cisto="A";
+							var njihovo= document.getElementById("vnosOdgovora").value;
 							//document.getElementById("opozorilo").innerHTML= {{ cistoo }};
-							if (njihovo === cisto) {																	//odg je pravilen
+							if (njihovo == cisto) {																	//odg je pravilen
 								document.getElementById("namig").style.display="none";
 								document.getElementById("prvi").style.display="none";
 								document.getElementById("drugi").style.display="none";
@@ -69,7 +69,7 @@
 								document.getElementById("pravilnost").style.color="green";
 							}
 							else {																						//odg je napacen
-								document.getElementById("pravilnost").innerHTML="Odgovor je napačen!";
+								document.getElementById("pravilnost").innerHTML="Odgovor je napačen, poskusi znova!";
 								document.getElementById("pravilnost").style.color="red";
 							}
 						}

@@ -126,10 +126,15 @@ def play():
     cistopis = dajVCaps(cistopis)
     tajnopis,kljuc = railCrypt(cistopis)
     
+    
     cistopis2= cistopis.upper().replace(" ", "")
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2)
 
 @app.route('/description')
 def description():
     return render_template("transposition.description.html")
+    
+@app.route('/scoreboard')
+def scoreboard():
+    return render_template("transposition.scoreboard.html")
