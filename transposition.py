@@ -7,6 +7,7 @@ import json
 import re
 import hashlib
 import numpy as np
+import string
 
 try:
     basestring
@@ -16,6 +17,8 @@ except NameError:
 
 app = Blueprint('transposition', __name__)
 
+level_trans = {2: 0, -1: 1}
+
 def getText(id):
     db = database.dbcon()
     cur = db.cursor()
@@ -23,6 +26,23 @@ def getText(id):
     txt = cur.fetchone()
     cur.close()
     return txt
+    
+def indices(level, language=None):
+    db = database.dbcon()
+    cur = db.cursor()
+    if language == None:
+        cur.execute("SELECT id FROM substitution WHERE level = %s ORDER BY id",
+                    [level_trans.get(level, level)])
+    else:
+        cur.execute("SELECT id FROM substitution WHERE level = %s AND language = %s ORDER BY id",
+                    [level_trans.get(level, level), language])
+    ids = [x[0] for x in cur.fetchall()]
+    cur.close()
+    if level in level_trans:
+        random.seed("Random seed:)%d" % level)
+        random.shuffle(ids)
+        random.seed()
+    return ids
     
 def dajVCaps (text):
     return text.upper().replace(" ", "")
@@ -49,6 +69,9 @@ def izberiBesedilo():
         return peto
     elif izberi ==6:
         return sesto
+        
+def izberiBesedilo2():
+    besedilo= indices (1, language)
     
 def railCrypt (text):
     dolzinaBesedila= len(text)
@@ -95,26 +118,55 @@ def transpozicijaStolpcev (text):
     tab=np.array([np.array(["" for i in range(kljuc)]) for j in range (visina)])
     vis=0
     dolz=0
-    for i in range(dolzinaBesedila):
+    for i in range(dolzinaBesedila):                                            #zapisemo v tabelo
         tab[vis][dolz]=text[i]
         dolz+=1
-        if dolz == kljuc:
+        if dolz == kljuc-1:
             dolz=0
             vis+=1
     if visina * kljuc != dolzinaBesedila:
         ostanek= dolzinaBesedila- visina * kljuc
-        #nafilaj tolko random črk notr
-    #naredi random število dolgo toliko, kolikor je ključ                                   DONE
-    kljuc2= narediNakljucnoSteviloDolzine(kljuc)
-    #beri tiste stolpce, daj jih v spremenljivko tajnopis
-    for x in range(kljuc):
+        #nafilaj tolko random črk notr  
+        abeceda="abcdefghijklmnoprstuvz"
+        crka=random.randint(0, 21)
+        for i in range(ostanek):
+            tab[vis][dolz]= abeceda[crka]
+            dolz+=1
+    kljuc2= narediNakljucnoSteviloDolzine(kljuc)                                #naredi random število dolgo toliko, kolikor je stolpcev
+    for x in range(kljuc):                                                      #beri tiste stolpce, daj jih v spremenljivko tajnopis
         spr=str(kljuc2)[0]
         tajnopis=tab[:,int (spr)]
     
     return (tajnopis, kljuc2)
     
-        
+def transpozicijaVrstic (text):
+    dolzinaBesedila=len(text)
+    kljuc= random.randint(2, int (dolzinaBesedila/2))
+    visina= int(dolzinaBesedila/kljuc)
+    tajnopis=""
+    tab=np.array([np.array(["" for i in range(kljuc)]) for j in range (visina)])
+    vis=0
+    dolz=0
+    for i in range(dolzinaBesedila):                                            #zapisemo v tabelo
+        tab[vis][dolz]= text[i]
+        vis+=1
+        if vis == visina-1:
+            vis=0
+            dolz+=1
+    if visina * kljuc != dolzinaBesedila:
+        ostanek= dolzinaBesedila- visina * kljuc
+        #nafilaj tolko random črk notr
+        abeceda="abcdefghijklmnoprstuvz"
+        crka=random.randint(0, 21)
+        for i in range(ostanek):
+            tab[vis][dolz]= abeceda[crka]
+            vis+=1
+    kljuc2= narediNakljucnoSteviloDolzine(visina)                                #naredi random število dolgo toliko, kolikor je vrstic
+    for x in range(kljuc):                                                      #beri tiste vrstice, daj jih v spremenljivko tajnopis
+        spr=str(kljuc2)[0]                      #spremeni, da bere vrstice, in ne stolpce
+        tajnopis=tab[:,int (spr)]
     
+    return (tajnopis, kljuc2)
 
 @app.route('/')
 def index():
@@ -122,14 +174,34 @@ def index():
 
 @app.route('/play')
 def play():
-    cistopis = izberiBesedilo()
-    cistopis = dajVCaps(cistopis)
-    tajnopis,kljuc = railCrypt(cistopis)
+    #cistopis = izberiBesedilo()
+    #cistopis2= cistopis.upper()                                         #.translate(None, string.punctuation)               mora se izlocit locila
+    #cistopis = dajVCaps(cistopis)
+    #tajnopis,kljuc = railCrypt(cistopis)
+    #cistopis2= cistopis.upper().replace(" ", "")
+    #cistopis2 naj gre v uppercase in brez ločil
+    
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    text= getText(texts[idx])
+    text = re.sub(r'\s', '', text)
+    vrsta=""
+    
+    izberi=random.randint(1, 3)
+    if izberi == 1:
+        tajnopis,kljuc = railCrypt(text)
+        vrsta= "Rail fence"
+    elif izberi ==2:
+        tajnopis,kljuc = transpozicijaStolpcev(text)
+        vrsta= "Transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis,kljuc = transpozicijaVrstic(text)
+        vrsta= "Transpozicija vrstic"
     
     
-    cistopis2= cistopis.upper().replace(" ", "")
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= text, vrstaa= vrsta)
 
 @app.route('/description')
 def description():

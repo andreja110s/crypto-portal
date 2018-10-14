@@ -18,7 +18,7 @@
 					<br>
 					Originalno sporočilo je:
 					<br>
-					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR V VELIKIH TISKANIH ČRKAH, BREZ LOČIL IN PRESLEDKOV" style="border: 2px solid black; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px;">
+					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR, BREZ LOČIL" style="border: 2px solid black; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px;">
 					<button type="button" onclick="pravilenOdgovor()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Potrdi</button>
 					<br>
 					<br>
@@ -33,7 +33,8 @@
 						var steviloKlikov=0;
 						function prikaziNamig() {
 							if(steviloKlikov==0) {
-								document.getElementById("prvi").innerHTML="Rail fence cipher";
+								//vrstaTranspozicije = "{{ vrstaa }}"
+								document.getElementById("prvi").innerHTML= {{ vrstaa }};
 								steviloKlikov++;
 							}
 							else if (steviloKlikov==1) {
@@ -53,10 +54,12 @@
 							
 							//poglejmo=poglejmo.replace(/\s/g, '');
 							
-							var cisto= "{{ cistoo }}";																		//WHY WONT IT WORK?!?!
-							//var cisto="A";
+							var cisto= "{{ cistoo }}";
+							
 							var njihovo= document.getElementById("vnosOdgovora").value;
-							//document.getElementById("opozorilo").innerHTML= {{ cistoo }};
+							njihovo=njihovo.replace(/\s{2,}/g," ");												//odstranimo ločia
+							njihovo=njihovo.toUpperCase();														//damo v upper case
+							//njihovo=njihovo.replace(/\s+/g, '');
 							if (njihovo == cisto) {																	//odg je pravilen
 								document.getElementById("namig").style.display="none";
 								document.getElementById("prvi").style.display="none";
