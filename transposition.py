@@ -158,7 +158,7 @@ def transpozicijaVrstic (text):
             crka=random.randint(0, 21)
             tab[vis][dolz]= abeceda[crka]
             vis+=1
-    kljuc2= narediNakljucnoSteviloDolzine(visina)                                #naredi random število dolgo toliko, kolikor je vrstic
+    kljuc2= narediNakljucnoSteviloDolzine(visina)                                #naredi random stevilo dolgo toliko, kolikor je vrstic
     beremo=0
     for x in range(kljuc):                                                      #beri tiste vrstice, daj jih v spremenljivko tajnopis
         stVrsticeKiJoBeremo=kljuc2[beremo]                                       #spremeni, da bere vrstice, in ne stolpce
@@ -183,8 +183,15 @@ def play():
     language= None
     texts = indices(1, language)
     idx = random.randrange(len(texts))
+    
     text= getText(texts[idx])
-    text = re.sub(r'\s', '', text)
+    text= re.sub(r'[^a-zA-Z]', "", text)
+    text= text.upper()
+    
+    text2= text.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    text2= re.sub(r'[^a-zA-Z]', "", text2)          #tukaj odstranimo locila
+    text2= text2.upper()                            #tukaj damo v upper
+    #text = re.sub(r'\s', '', text)
     vrsta=""
     
     izberi=random.randint(1, 3)
