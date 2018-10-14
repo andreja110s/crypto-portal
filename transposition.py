@@ -100,14 +100,10 @@ def railCrypt (text):
     return tajnopis, kljuc
     
 def narediNakljucnoSteviloDolzine(n):
-    #zacetek= 10**(n-1)
-    #konec= (10**n)-1
-    #stevilo = random.randint(zacetek, konec)
+    tab= np.arange(n)
+    np.random.shuffle(tab)
     
-    #POPRAVI IN NAREDI PRAV!!!!
-    
-    
-    return stevilo
+    return tab
     
 
 def transpozicijaStolpcev (text):
@@ -126,16 +122,17 @@ def transpozicijaStolpcev (text):
             vis+=1
     if visina * kljuc != dolzinaBesedila:
         ostanek= dolzinaBesedila- visina * kljuc
-        #nafilaj tolko random črk notr  
         abeceda="abcdefghijklmnoprstuvz"
-        crka=random.randint(0, 21)
         for i in range(ostanek):
+            crka=random.randint(0, 21)
             tab[vis][dolz]= abeceda[crka]
             dolz+=1
     kljuc2= narediNakljucnoSteviloDolzine(kljuc)                                #naredi random število dolgo toliko, kolikor je stolpcev
+    beremo=0
     for x in range(kljuc):                                                      #beri tiste stolpce, daj jih v spremenljivko tajnopis
-        spr=str(kljuc2)[0]
-        tajnopis=tab[:,int (spr)]
+        stStolpcaKiGaBeremo=kljuc2[beremo]
+        tajnopis=tab[:,stStolpcaKiGaBeremo]
+        beremo+=1
     
     return (tajnopis, kljuc2)
     
@@ -157,14 +154,16 @@ def transpozicijaVrstic (text):
         ostanek= dolzinaBesedila- visina * kljuc
         #nafilaj tolko random črk notr
         abeceda="abcdefghijklmnoprstuvz"
-        crka=random.randint(0, 21)
         for i in range(ostanek):
+            crka=random.randint(0, 21)
             tab[vis][dolz]= abeceda[crka]
             vis+=1
     kljuc2= narediNakljucnoSteviloDolzine(visina)                                #naredi random število dolgo toliko, kolikor je vrstic
+    beremo=0
     for x in range(kljuc):                                                      #beri tiste vrstice, daj jih v spremenljivko tajnopis
-        spr=str(kljuc2)[0]                      #spremeni, da bere vrstice, in ne stolpce
-        tajnopis=tab[:,int (spr)]
+        stVrsticeKiJoBeremo=kljuc2[beremo]                                       #spremeni, da bere vrstice, in ne stolpce
+        tajnopis=tab[stVrsticeKiJoBeremo,:]
+        beremo+=1
     
     return (tajnopis, kljuc2)
 
@@ -198,7 +197,6 @@ def play():
     elif izberi ==3:
         tajnopis,kljuc = transpozicijaVrstic(text)
         vrsta= "Transpozicija vrstic"
-    
     
     
     return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= text, vrstaa= vrsta)
