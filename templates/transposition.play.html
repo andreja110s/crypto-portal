@@ -19,7 +19,7 @@
 					Originalno sporočilo je:
 					<br>
 					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR, BREZ LOČIL" style="border: 2px solid black; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px;">
-					<button type="button" onclick="pravilenOdgovor()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Potrdi</button>
+					<button id="potrdi" type="button" onclick="pravilenOdgovor()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Potrdi</button>
 					<br>
 					<br>
 					<p id="pravilnost"></p>
@@ -38,7 +38,7 @@
 								steviloKlikov++;
 							}
 							else if (steviloKlikov==1) {
-								document.getElementById("drugi").innerHTML= {{ key }};
+								document.getElementById("drugi").innerHTML= "{{ key }}";
 								steviloKlikov++;
 							}
 							else if (steviloKlikov==2) {
@@ -70,6 +70,10 @@
 								
 								document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
 								document.getElementById("pravilnost").style.color="green";
+								
+								//spremeni gumb Potrdi v Nova naloga, zraven daj gumb Spremeni tezavnost
+								//document.getElementById("potrdi").innerHTML="Nova naloga"
+								
 							}
 							else {																						//odg je napacen
 								document.getElementById("pravilnost").innerHTML="Odgovor je napačen, poskusi znova!";

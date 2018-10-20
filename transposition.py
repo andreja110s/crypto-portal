@@ -103,7 +103,7 @@ def narediNakljucnoSteviloDolzine(n):
     tab= np.arange(1,n+1)
     np.random.shuffle(tab)
     
-    kljucLepse=int(''.join(map(str, tab)))
+    kljucLepse=(' '.join(map(str, tab)))
     
     return tab, kljucLepse
     
@@ -213,7 +213,6 @@ def play():
         vrsta= "Transpozicija vrstic"
         
     #izberi=random.randint(1, 3)
-    
     #if izberi ==1:
     #    tajnopis,kljuc = railCrypt(cistopis)
     #    vrsta= "Rail fence"
