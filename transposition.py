@@ -185,13 +185,13 @@ def play():
     texts = indices(1, language)
     idx = random.randrange(len(texts))
     
-    text= getText(texts[idx])
-    text= re.sub(r'[^a-zA-Z]', "", text)
-    text= text.upper()
+    zaCistopis= getText(texts[idx])
+    zaCistopis= re.sub(r'[^a-zA-Z]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
     
-    text2= text.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
-    text2= re.sub(r'[^a-zA-Z]', "", text2)          #tukaj odstranimo locila
-    text2= text2.upper()                            #tukaj damo v upper
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[^a-zA-Z]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
     #text = re.sub(r'\s', '', text)
     vrsta=""
     
@@ -203,13 +203,13 @@ def play():
     
     izberi=random.randint(1, 3)
     if izberi == 1:
-        tajnopis,kljuc = railCrypt(text)
+        tajnopis,kljuc = railCrypt(toZakriptiramo)
         vrsta= "Rail fence"
     elif izberi ==2:
-        tajnopis,kljuc = transpozicijaStolpcev(text)
+        tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
         vrsta= "Transpozicija stolpcev"
     elif izberi ==3:
-        tajnopis,kljuc = transpozicijaVrstic(text)
+        tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
         vrsta= "Transpozicija vrstic"
         
     #izberi=random.randint(1, 3)
@@ -225,7 +225,7 @@ def play():
         
     #return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, vrstaa= vrsta)
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= text, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, vrstaa= vrsta)
 
 @app.route('/description')
 def description():
