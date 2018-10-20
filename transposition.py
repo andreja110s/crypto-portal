@@ -100,72 +100,73 @@ def railCrypt (text):
     return tajnopis, kljuc
     
 def narediNakljucnoSteviloDolzine(n):
-    tab= np.arange(n)
+    tab= np.arange(1,n+1)
     np.random.shuffle(tab)
     
-    return tab
+    kljucLepse=int(''.join(map(str, tab)))
+    
+    return tab, kljucLepse
     
 
 def transpozicijaStolpcev (text):
     dolzinaBesedila=len(text)
     kljuc= random.randint(2, int (dolzinaBesedila/2))
-    visina=int (dolzinaBesedila/kljuc)
+    visina=int (dolzinaBesedila/kljuc) + 1
     tajnopis= ""
-    tab=np.array([np.array(["" for i in range(kljuc)]) for j in range (visina)])
-    vis=0
-    dolz=0
-    for i in range(dolzinaBesedila):                                            #zapisemo v tabelo
-        tab[vis][dolz]=text[i]
-        dolz+=1
-        if dolz == kljuc-1:
-            dolz=0
-            vis+=1
-    if visina * kljuc != dolzinaBesedila:
-        ostanek= dolzinaBesedila- visina * kljuc
+    
+    dodatek=""
+    dimenzija= visina*kljuc
+    
+    if dimenzija > dolzinaBesedila: 
+        ostanek= dimenzija - dolzinaBesedila
         abeceda="abcdefghijklmnoprstuvz"
         for i in range(ostanek):
             crka=random.randint(0, 21)
-            tab[vis][dolz]= abeceda[crka]
-            dolz+=1
-    kljuc2= narediNakljucnoSteviloDolzine(kljuc)                                #naredi random število dolgo toliko, kolikor je stolpcev
-    beremo=0
-    for x in range(kljuc):                                                      #beri tiste stolpce, daj jih v spremenljivko tajnopis
-        stStolpcaKiGaBeremo=kljuc2[beremo]
-        tajnopis=tab[:,stStolpcaKiGaBeremo]
-        beremo+=1
+            dodatek= abeceda[crka]
+            dodatek=dodatek.upper()
+            text+=dodatek
     
-    return (tajnopis, kljuc2)
+    text=list(text)
+    text=np.reshape(text, (visina, kljuc))
+    
+    kljuc2, kljuc3= narediNakljucnoSteviloDolzine(kljuc)                                #naredi random število dolgo toliko, kolikor je stolpcev
+    
+    for x in range(kljuc):                                                      #beri tiste stolpce, daj jih v spremenljivko tajnopis
+        stStolpcaKiGaBeremo=kljuc2[x]-1
+        for y in range (visina):
+            tajnopis+=text[y][stStolpcaKiGaBeremo]
+    
+    return (tajnopis, kljuc3)
     
 def transpozicijaVrstic (text):
     dolzinaBesedila=len(text)
     kljuc= random.randint(2, int (dolzinaBesedila/2))
-    visina= int(dolzinaBesedila/kljuc)
+    visina= int(dolzinaBesedila/kljuc) + 1
     tajnopis=""
-    tab=np.array([np.array(["" for i in range(kljuc)]) for j in range (visina)])
-    vis=0
-    dolz=0
-    for i in range(dolzinaBesedila):                                            #zapisemo v tabelo
-        tab[vis][dolz]= text[i]
-        vis+=1
-        if vis == visina-1:
-            vis=0
-            dolz+=1
-    if visina * kljuc != dolzinaBesedila:
-        ostanek= dolzinaBesedila- visina * kljuc
-        #nafilaj tolko random črk notr
+    
+    dodatek=""
+    dimenzija= visina*kljuc
+    
+    if dimenzija > dolzinaBesedila: 
+        ostanek= dimenzija - dolzinaBesedila
         abeceda="abcdefghijklmnoprstuvz"
         for i in range(ostanek):
             crka=random.randint(0, 21)
-            tab[vis][dolz]= abeceda[crka]
-            vis+=1
-    kljuc2= narediNakljucnoSteviloDolzine(visina)                                #naredi random stevilo dolgo toliko, kolikor je vrstic
-    beremo=0
-    for x in range(kljuc):                                                      #beri tiste vrstice, daj jih v spremenljivko tajnopis
-        stVrsticeKiJoBeremo=kljuc2[beremo]                                       #spremeni, da bere vrstice, in ne stolpce
-        tajnopis=tab[stVrsticeKiJoBeremo,:]
-        beremo+=1
+            dodatek= abeceda[crka]
+            dodatek=dodatek.upper()
+            text+=dodatek
     
-    return (tajnopis, kljuc2)
+    text=list(text)
+    text=np.reshape(text, (visina, kljuc))
+    text=np.transpose(text)
+    
+    kljuc2, kljuc3= narediNakljucnoSteviloDolzine(kljuc)                                #naredi random stevilo dolgo toliko, kolikor je vrstic
+    for x in range(kljuc):                                                      #beri tiste vrstice, daj jih v spremenljivko tajnopis
+        stVrsticeKiJoBeremo=kljuc2[x]-1
+        for y in range (visina):
+            tajnopis+=text[stVrsticeKiJoBeremo][y]
+        
+    return (tajnopis, kljuc3)
 
 @app.route('/')
 def index():
@@ -194,6 +195,12 @@ def play():
     #text = re.sub(r'\s', '', text)
     vrsta=""
     
+    
+    #cistopis = izberiBesedilo()
+    #cistopis2= cistopis.upper()
+    #cistopis = dajVCaps(cistopis)
+    
+    
     izberi=random.randint(1, 3)
     if izberi == 1:
         tajnopis,kljuc = railCrypt(text)
@@ -204,7 +211,20 @@ def play():
     elif izberi ==3:
         tajnopis,kljuc = transpozicijaVrstic(text)
         vrsta= "Transpozicija vrstic"
+        
+    #izberi=random.randint(1, 3)
     
+    #if izberi ==1:
+    #    tajnopis,kljuc = railCrypt(cistopis)
+    #    vrsta= "Rail fence"
+    #if izberi ==2:
+    #    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+    #    vrsta= "Transpozicija stolpcev"
+    #elif izberi ==3:
+    #    tajnopis,kljuc = transpozicijaVrstic(cistopis)
+    #    vrsta= "Transpozicija vrstic"
+        
+    #return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, vrstaa= vrsta)
     
     return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= text, vrstaa= vrsta)
 
