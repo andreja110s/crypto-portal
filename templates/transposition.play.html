@@ -7,59 +7,83 @@
             <div class="panel-heading" id="head">
                 <div class="row">
 					<div class="col-lg-12 col-md-12 col-sm-12">
-						<b><span class="pozdrav1">Naloga</span></b>
+						<b><span class="pozdrav1" id="naslov"></span></b>
 					</div>
 				</div>
 			</div>
 			<div class="panel-body">
 				<div class="container-fluid">
 					
-					<p id="tajnopis" style="border: 3px solid #467892; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px; word-break: break-all;">{{ name }}</p>
+					<p id="tajnopis" class="tajnopis">{{ name }}</p>
 					<br>
 					Originalno sporočilo je:
 					<br>
-					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR, BREZ LOČIL" style="border: 2px solid black; width:50%; border-radius: 10px; background-color: #eeeeee; margin-top: 20px; padding: 10px;">
-					<button id="potrdi" type="button" onclick="pravilenOdgovor()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Potrdi</button>
+					<input type="text" id="vnosOdgovora" placeholder="VNESI SVOJ ODGOVOR, BREZ LOČIL" class="odgovor">
+					<button id="potrdi" type="button" onclick="pravilenOdgovor()" class="mainButtons">Potrdi</button>
+					<button id="novaNaloga" type="button" onclick="window.location.reload()" class="mainButtons">Nova naloga</button>
 					<br>
 					<br>
 					<p id="pravilnost"></p>
-					<button type="button" id="namig" onclick="prikaziNamig()" style="border: 2px solid black; border-radius: 5px; background-color: #eeeeee; font-size: 15px; margin-top: 20px; padding: 5px 10px;">Namig</button> <b id="opozorilo">Pozor: ob kliku na gumb "Namig" se ti bo od končnega rezultata odbilo X točk!</b>
+					<button type="button" id="namig" onclick="prikaziNamig()" class="mainButtons">Namig</button> <b id="opozorilo">Pozor: ob kliku na gumb "Namig" se ti bo od končnega rezultata odbilo X točk!</b>
+					<br>
+					<br id="break" style="display:none;">
 					<p id="prvi"></p>
 					<p id="drugi"></p>
 					<p id="tretji"></p>
 					<p id="cetrti"></p>
 					
 					<script>
-						var steviloKlikov=0;
-						function prikaziNamig() {
-							if(steviloKlikov==0) {
-								//vrstaTranspozicije = "{{ vrstaa }}"
-								document.getElementById("prvi").innerHTML= "{{ vrstaa }}";
-								steviloKlikov++;
-							}
-							else if (steviloKlikov==1) {
-								document.getElementById("drugi").innerHTML= "{{ key }}";
-								steviloKlikov++;
-							}
-							else if (steviloKlikov==2) {
-								document.getElementById("tretji").innerHTML="Ni več namigov";
-								steviloKlikov++;
-							}
-							else if (steviloKlikov==3) {
-								document.getElementById("cetrti").innerHTML="Nice try ;)";
+						document.getElementById("naslov").innerHTML= "{{ imeNaloge }}";
+						
+						var Tezavnost= "{{ tezavnost }}";
+						var vrstaTranspozicije = "{{ vrstaa }}";
+						
+						if(Tezavnost == "L") {																			//ni gumba za namig
+							document.getElementById("opozorilo").style.display="none";
+							document.getElementById("namig").style.display="none";
+							document.getElementById("prvi").innerHTML= "Ključ: {{ key }}";
+						}
+						else if (Tezavnost == "T"){																		//je, pokaže samo ključ
+							document.getElementById("opozorilo").style.display="none";
+							function prikaziNamig() {
+								document.getElementById('break').style.display = "block";
+								document.getElementById("prvi").innerHTML= "Ključ: {{ key }}";
 							}
 						}
 						
+						
+						if (Tezavnost== "Tekmovanje") {
+							var steviloKlikov=0;
+							document.getElementById("opozorilo").style.display="none";
+							function prikaziNamig() {
+								if(steviloKlikov==0) {
+									//vrstaTranspozicije = "{{ vrstaa }}"
+									document.getElementById('break').style.display = "block";
+									document.getElementById("prvi").innerHTML= "Vrsta šifriranja: {{ vrstaa }}";
+									steviloKlikov++;
+								}
+								else if (steviloKlikov==1) {
+									document.getElementById("drugi").innerHTML= "Ključ: {{ key }}";
+									steviloKlikov++;
+								}
+								else if (steviloKlikov==2) {
+									document.getElementById("tretji").innerHTML="Ni več namigov";
+									steviloKlikov++;
+								}
+								else if (steviloKlikov==3) {
+									document.getElementById("cetrti").innerHTML="Nice try ;)";
+								}
+							}
+						}
+						
+						
 						function pravilenOdgovor() {
-							
-							//poglejmo=poglejmo.replace(/\s/g, '');
 							
 							var cisto= "{{ cistoo }}";
 							
 							var njihovo= document.getElementById("vnosOdgovora").value;
 							njihovo=njihovo.replace(/\s{2,}/g," ");												//odstranimo ločia
 							njihovo=njihovo.toUpperCase();														//damo v upper case
-							//njihovo=njihovo.replace(/\s+/g, '');
 							if (njihovo == cisto) {																	//odg je pravilen
 								document.getElementById("namig").style.display="none";
 								document.getElementById("prvi").style.display="none";
@@ -68,19 +92,69 @@
 								document.getElementById("cetrti").style.display="none";
 								document.getElementById("opozorilo").style.display="none";
 								
+								document.getElementById('break').style.display = "block";
 								document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
 								document.getElementById("pravilnost").style.color="green";
 								
-								//spremeni gumb Potrdi v Nova naloga, zraven daj gumb Spremeni tezavnost
-								//document.getElementById("potrdi").innerHTML="Nova naloga"
+								document.getElementById("novaNaloga").innerHTML="Lestvica";
+								document.getElementById("novaNaloga").onclick = function() { window.location.href = "/transposition/scoreboard"; }
+								
+								document.getElementById("potrdi").style.display="none";
 								
 							}
 							else {																						//odg je napacen
+								document.getElementById('break').style.display = "block";
 								document.getElementById("pravilnost").innerHTML="Odgovor je napačen, poskusi znova!";
 								document.getElementById("pravilnost").style.color="red";
 							}
 						}
 					</script>
+					
+					<style>
+						.mainButtons {
+							border: 2px solid black; 
+							border-radius: 5px; 
+							background-color: #eeeeee; 
+							font-size: 15px; 
+							margin-top: 20px; 
+							padding: 5px 10px;
+						}
+						
+						.mainButtons:hover {
+							background-color: #bebebe;
+						}
+						
+						.sideButtons {
+							border: 2px solid black; 
+							border-radius: 5px; 
+							background-color: #eeeeee; 
+							font-size: 15px; 
+							margin-top: 20px; 
+							padding: 5px 10px;
+						}
+						.sideButtons:hover {
+							background-color: #d6d6d6;
+						}
+						
+						.tajnopis {
+							border: 3px solid #467892; 
+							width:50%; 
+							border-radius: 10px; 
+							background-color: #eeeeee; 
+							margin-top: 20px; 
+							padding: 10px; 
+							word-break: break-all;
+						}
+						
+						.odgovor {
+							border: 2px solid black; 
+							width:50%; 
+							border-radius: 10px; 
+							background-color: #eeeeee; 
+							margin-top: 20px; 
+							padding: 10px;
+						}
+					</style>
 					
 				</div>	
 			</div>	

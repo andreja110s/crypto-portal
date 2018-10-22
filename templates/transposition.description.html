@@ -13,13 +13,19 @@
 			</div>
 			<div class="panel-body">
 				<div class="container-fluid">
+					<style>
+						.imeTranspozicije {
+							color: #467892;
+							font-size: 24px;
+							float: left;
+						}
+					</style>
 					<p>V transpozicijski šifri ostanejo črke originalnega sporočila nespremenjene, njihova mesta pa so pomešana na nek sistematičen način.</p>
-					<br>
 					<p><li><a href="#railfence">Rail fence cipher</a></li></p>
 					<p><li><a href="#route">Route cipher</a></li></p>
 					<p><li><a href="#transpozicija">Transpozicija stolpcev</a></li></p>
+					<p><b><a name="railfence" class="imeTranspozicije">RAIL FENCE CIPHER</a></b></p>
 					<br>
-					<p><h2><b><a name="railfence">RAIL FENCE CIPHER</a></b></h2></p>
 					<br>
 					<p>Šifriranje rail fence deluje tako, da cik-cakasto napišeš sporočilo od leve proti desni, nato prebereš besedilo po vrsticah.</p>
 					<p><u>ŠIFRIRANJE</u></p>
@@ -144,7 +150,9 @@
 					  </tr>
 					</table>					
 					<p>Tajnopis se tako glasi »TJKNIUANSRVOTKUUS«.</p>
-					<p><h2><b><a name="route">ROUTE CIPHER</a></b></h2></p>
+					<p><b><a name="route" class="imeTranspozicije">ROUTE CIPHER</a></b></p>
+					<br>
+					<br>
 					<p>Pri šifriranju z route cipher se sporočilo napiše v mrežo poljubne velikosti. Ključ nam pove, kako to sporočilo beremo, da dobimo tajnopis.</p>
 					<p><u>ŠIFRIRANJE</u></p>
 					<p>Dajmo ponovno vzeti sporočilo »TUKAJ NI SKRIVNOSTI«, ki ga zapišemo v mrežo. Naj bo ta velikosti 6x3.</p>
@@ -229,7 +237,9 @@
 					  </tr>
 					</table>
 					<p>Dobimo tajnopis »DSVKNKIOISJUTNRIAT«.</p>
-					<p><h2><b><a name="transpozicija">TRANSPOZICIJA STOLPCEV</a></b></h2></p>
+					<p><b><a name="transpozicija" class="imeTranspozicije">TRANSPOZICIJA STOLPCEV</a></b></p>
+					<br>
+					<br>
 					<p>Tako kot pri route cipher se tu sporočilo najprej vpiše v neko mrežo. Šifrirano sporočilo nato dobimo tako, da v nekem vrstnem redu preberemo stolpce.</p>
 					<p><u>ŠIFRIRANJE</u></p>
 					<p>Ponovno vzemimo sporočilo »TUKAJ NI SKRIVNOSTI« in ga vpišimo v mrežo 6x3, ampak tokrat zapišemo besedilo po vrsticah (s tem da prazno mesto spet zapolnimo s črko »D«).</p>

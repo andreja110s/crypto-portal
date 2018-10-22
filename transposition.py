@@ -97,6 +97,8 @@ def railCrypt (text):
     
     for i in range(kljuc):
         tajnopis+= ''.join(tab[i])
+        
+    kljuc=str(kljuc)
     return tajnopis, kljuc
     
 def narediNakljucnoSteviloDolzine(n):
@@ -174,62 +176,253 @@ def index():
 
 @app.route('/play')
 def play():
-    #cistopis = izberiBesedilo()
-    #cistopis2= cistopis.upper()                                         #.translate(None, string.punctuation)               mora se izlocit locila
-    #cistopis = dajVCaps(cistopis)
-    #tajnopis,kljuc = railCrypt(cistopis)
-    #cistopis2= cistopis.upper().replace(" ", "")
-    #cistopis2 naj gre v uppercase in brez ločil
+    #language= None
+    #texts = indices(1, language)
+    #idx = random.randrange(len(texts))
     
-    language= None
-    texts = indices(1, language)
-    idx = random.randrange(len(texts))
+    #zaCistopis= getText(texts[idx])[0]
+    #zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    #zaCistopis= zaCistopis.upper()                              #da vse v velike crke
     
-    zaCistopis= getText(texts[idx])
-    zaCistopis= re.sub(r'[^a-zA-Z]', "", zaCistopis)            #zbrise locila
-    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
-    
-    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
-    toZakriptiramo= re.sub(r'[^a-zA-Z]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
-    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
-    #text = re.sub(r'\s', '', text)
-    vrsta=""
+    #toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    #toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    #toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    ##text = re.sub(r'\s', '', text)
+    #vrsta=""
     
     
-    #cistopis = izberiBesedilo()
-    #cistopis2= cistopis.upper()
-    #cistopis = dajVCaps(cistopis)
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
     
     
-    izberi=random.randint(1, 3)
-    if izberi == 1:
-        tajnopis,kljuc = railCrypt(toZakriptiramo)
-        vrsta= "Rail fence"
-    elif izberi ==2:
-        tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
-        vrsta= "Transpozicija stolpcev"
-    elif izberi ==3:
-        tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
-        vrsta= "Transpozicija vrstic"
-        
     #izberi=random.randint(1, 3)
-    #if izberi ==1:
-    #    tajnopis,kljuc = railCrypt(cistopis)
+    #if izberi == 1:
+    #    tajnopis,kljuc = railCrypt(toZakriptiramo)
     #    vrsta= "Rail fence"
-    #if izberi ==2:
-    #    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
-    #    vrsta= "Transpozicija stolpcev"
+    #elif izberi ==2:
+    #    tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
+     #   vrsta= "Transpozicija stolpcev"
     #elif izberi ==3:
-    #    tajnopis,kljuc = transpozicijaVrstic(cistopis)
+    #    tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
     #    vrsta= "Transpozicija vrstic"
         
-    #return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, vrstaa= vrsta)
+    izberi=random.randint(1, 3)
+    if izberi ==1:
+        tajnopis,kljuc = railCrypt(cistopis)
+        vrsta= "Rail fence"
+    if izberi ==2:
+        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        vrsta= "Transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        vrsta= "Transpozicija vrstic"
+        
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, vrstaa= vrsta)
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, vrstaa= vrsta)
+    #return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, vrstaa= vrsta)
 
 @app.route('/description')
 def description():
     return render_template("transposition.description.html")
+    
+@app.route('/izberi')
+def izberi():
+    return render_template("transposition.izberi.html")
+    
+@app.route('/RFH')
+def rfh():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Rail fence"
+    
+    tajnopis,kljuc = railCrypt(cistopis)
+    TL="T"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    
+@app.route('/RFE')
+def rfe():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Rail fence"
+    
+    tajnopis,kljuc = railCrypt(cistopis)
+    TL="L"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    
+@app.route('/TSE')
+def tse():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Transpozicija stolpcev"
+    
+    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+    TL="L"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+
+@app.route('/TSH')
+def tsh():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Transpozicija stolpcev"
+    
+    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+    TL="T"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    
+@app.route('/TVE')
+def tve():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Transpozicija vrstic"
+    
+    tajnopis,kljuc = transpozicijaVrstic(cistopis)
+    TL="L"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+
+@app.route('/TVH')
+def tvh():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    zaNalogo="Naloga za vajo: Transpozicija vrstic"
+    
+    tajnopis,kljuc = transpozicijaVrstic(cistopis)
+    TL="T"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    
+    
+#tekmovanje    
+
+@app.route('/TL')
+def tl():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    vrsta=""
+    
+    izberi=random.randint(1, 3)
+    if izberi ==1:
+        tajnopis,kljuc = railCrypt(cistopis)
+        vrsta= "Rail fence"
+    if izberi ==2:
+        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        vrsta= "Transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        vrsta= "Transpozicija vrstic"
+        
+    TL="Tekmovanje"
+    zaNalogo="Tekmovanje: lahko"
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+
+@app.route('/TS')
+def ts():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    vrsta=""
+    
+    izberi=random.randint(1, 3)                                     #kriptiramo prvič
+    if izberi ==1:
+        tajnopis,kljuc = railCrypt(cistopis)
+        vrsta= "Rail fence"
+    if izberi ==2:
+        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        vrsta= "Transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        vrsta= "Transpozicija vrstic"
+    
+    izberi=random.randint(1, 3)                                     #kriptiramo drugič
+    if izberi ==1:
+        tajnopis2,kljuc2 = railCrypt(tajnopis)
+        vrsta+= ", rail fence"
+    if izberi ==2:
+        tajnopis2,kljuc2 = transpozicijaStolpcev(tajnopis)
+        vrsta+= ", transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis2,kljuc2 = transpozicijaVrstic(tajnopis)
+        vrsta+= ", transpozicija vrstic"
+    
+    kljuc+="; "
+    kljuc+=kljuc2
+    TL="Tekmovanje"
+    zaNalogo="Tekmovanje: srednje"
+    
+    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+
+@app.route('/TT')
+def tt():
+    cistopis = izberiBesedilo()
+    cistopis2= cistopis.upper()
+    cistopis = dajVCaps(cistopis)
+    
+    vrsta=""
+    kljuc=""
+    
+    izberi=random.randint(1, 3)                                         #kriptiramo prvič
+    if izberi ==1:
+        tajnopis,kljuc = railCrypt(cistopis)
+        vrsta= "Rail fence"
+    if izberi ==2:
+        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        vrsta= "Transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        vrsta= "Transpozicija vrstic"
+        
+    izberi=random.randint(1, 3)                                         #kriptiramo drugič
+    if izberi ==1:
+        tajnopis2,kljuc2 = railCrypt(tajnopis)
+        vrsta+= ", rail fence"
+    if izberi ==2:
+        tajnopis2,kljuc2 = transpozicijaStolpcev(tajnopis)
+        vrsta+= ", transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis2,kljuc2 = transpozicijaVrstic(tajnopis)
+        vrsta+= ", transpozicija vrstic"
+        
+    izberi=random.randint(1, 3)                                     #kriptiramo tretjič
+    if izberi ==1:
+        tajnopis3,kljuc3 = railCrypt(tajnopis2)
+        vrsta+= ", rail fence"
+    if izberi ==2:
+        tajnopis3,kljuc3 = transpozicijaStolpcev(tajnopis2)
+        vrsta+= ", transpozicija stolpcev"
+    elif izberi ==3:
+        tajnopis3,kljuc3 = transpozicijaVrstic(tajnopis2)
+        vrsta+= ", transpozicija vrstic"
+    
+    kljuc+="; "
+    kljuc+=kljuc2
+    kljuc+="; "
+    kljuc+=kljuc3
+    
+    TL="Tekmovanje"
+    zaNalogo="Tekmovanje: težko"
+    
+    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
     
 @app.route('/scoreboard')
 def scoreboard():
