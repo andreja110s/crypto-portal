@@ -22,7 +22,7 @@
 					<button id="potrdi" type="button" onclick="pravilenOdgovor()" class="mainButtons">Potrdi</button>
 					<button id="novaNaloga" type="button" onclick="window.location.reload()" class="mainButtons">Nova naloga</button>
 					<br>
-					<br>
+					<br id="drugiBreak">
 					<p id="pravilnost"></p>
 					<button type="button" id="namig" onclick="prikaziNamig()" class="mainButtons">Namig</button> <b id="opozorilo">Pozor: ob kliku na gumb "Namig" se ti bo od končnega rezultata odbilo X točk!</b>
 					<br>
@@ -53,17 +53,24 @@
 						
 						
 						if (Tezavnost== "Tekmovanje") {
+							var tockePrikaz=50;
+							document.getElementById("opozorilo").innerHTML="Pozor: ob kliku na gumb Namig se ti bo od končnega rezultata odbilo 50 točk!";
+							
 							var steviloKlikov=0;
-							document.getElementById("opozorilo").style.display="none";
+							var tocke=0;
 							function prikaziNamig() {
 								if(steviloKlikov==0) {
 									//vrstaTranspozicije = "{{ vrstaa }}"
 									document.getElementById('break').style.display = "block";
 									document.getElementById("prvi").innerHTML= "Vrsta šifriranja: {{ vrstaa }}";
+									tocke+=50;
+									document.getElementById("opozorilo").innerHTML="Pozor: ob kliku na gumb Namig se ti bo od končnega rezultata odbilo 100 točk!";
 									steviloKlikov++;
 								}
 								else if (steviloKlikov==1) {
 									document.getElementById("drugi").innerHTML= "Ključ: {{ key }}";
+									tocke+=100;
+									document.getElementById("opozorilo").style.display="none";
 									steviloKlikov++;
 								}
 								else if (steviloKlikov==2) {
@@ -72,6 +79,8 @@
 								}
 								else if (steviloKlikov==3) {
 									document.getElementById("cetrti").innerHTML="Nice try ;)";
+									document.getElementById("namig").style.display="none";
+									document.getElementById("drugiBreak").style.display="none";
 								}
 							}
 						}
@@ -83,6 +92,7 @@
 							
 							var njihovo= document.getElementById("vnosOdgovora").value;
 							njihovo=njihovo.replace(/\s{2,}/g," ");												//odstranimo ločia
+							njihovo = njihovo.replace(/\s+/g, '');
 							njihovo=njihovo.toUpperCase();														//damo v upper case
 							if (njihovo == cisto) {																	//odg je pravilen
 								document.getElementById("namig").style.display="none";
@@ -93,8 +103,10 @@
 								document.getElementById("opozorilo").style.display="none";
 								
 								document.getElementById('break').style.display = "block";
+								document.getElementById('drugiBreak').style.display = "block";
 								document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
 								document.getElementById("pravilnost").style.color="green";
+								document.getElementById('break').style.display = "block";
 								
 								document.getElementById("novaNaloga").innerHTML="Lestvica";
 								document.getElementById("novaNaloga").onclick = function() { window.location.href = "/transposition/scoreboard"; }

@@ -232,126 +232,195 @@ def izberi():
     
 @app.route('/RFH')
 def rfh():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = railCrypt(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Rail fence"
-    
-    tajnopis,kljuc = railCrypt(cistopis)
     TL="T"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
     
 @app.route('/RFE')
 def rfe():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = railCrypt(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Rail fence"
-    
-    tajnopis,kljuc = railCrypt(cistopis)
     TL="L"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
     
 @app.route('/TSE')
 def tse():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Transpozicija stolpcev"
-    
-    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
     TL="L"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
 
 @app.route('/TSH')
 def tsh():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Transpozicija stolpcev"
-    
-    tajnopis,kljuc = transpozicijaStolpcev(cistopis)
     TL="T"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
     
 @app.route('/TVE')
 def tve():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Transpozicija vrstic"
-    
-    tajnopis,kljuc = transpozicijaVrstic(cistopis)
     TL="L"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
 
 @app.route('/TVH')
 def tvh():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
+    
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
+    vrsta=""
+    
+    tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
     
     zaNalogo="Naloga za vajo: Transpozicija vrstic"
-    
-    tajnopis,kljuc = transpozicijaVrstic(cistopis)
     TL="T"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo)
     
     
 #tekmovanje    
 
 @app.route('/TL')
 def tl():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
     
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
     vrsta=""
     
     izberi=random.randint(1, 3)
     if izberi ==1:
-        tajnopis,kljuc = railCrypt(cistopis)
+        tajnopis,kljuc = railCrypt(toZakriptiramo)
         vrsta= "Rail fence"
     if izberi ==2:
-        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
         vrsta= "Transpozicija stolpcev"
     elif izberi ==3:
-        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
         vrsta= "Transpozicija vrstic"
         
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: lahko"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
 
 @app.route('/TS')
 def ts():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
     
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
     vrsta=""
+    kljuc=""
     
     izberi=random.randint(1, 3)                                     #kriptiramo prvič
     if izberi ==1:
-        tajnopis,kljuc = railCrypt(cistopis)
+        tajnopis,kljuc = railCrypt(toZakriptiramo)
         vrsta= "Rail fence"
     if izberi ==2:
-        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
         vrsta= "Transpozicija stolpcev"
     elif izberi ==3:
-        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
         vrsta= "Transpozicija vrstic"
     
     izberi=random.randint(1, 3)                                     #kriptiramo drugič
@@ -370,26 +439,33 @@ def ts():
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: srednje"
     
-    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
 
 @app.route('/TT')
 def tt():
-    cistopis = izberiBesedilo()
-    cistopis2= cistopis.upper()
-    cistopis = dajVCaps(cistopis)
+    language= None
+    texts = indices(1, language)
+    idx = random.randrange(len(texts))
     
+    zaCistopis= getText(texts[idx])[0]
+    zaCistopis= re.sub(r'[\W0-9_]', "", zaCistopis)            #zbrise locila
+    zaCistopis= zaCistopis.upper()                              #da vse v velike crke
+    
+    toZakriptiramo= zaCistopis.replace(" ", "")                    #to damo v funkcije za sifriranje (ne sme imeti presledkov, locil, mora biti v uppercase)       #tukaj odstranimo presledke
+    toZakriptiramo= re.sub(r'[\W0-9_]', "", toZakriptiramo)          #tukaj odstranimo locila (za gvisno se 1x)
+    toZakriptiramo= toZakriptiramo.upper()                            #tukaj damo v upper
     vrsta=""
     kljuc=""
     
     izberi=random.randint(1, 3)                                         #kriptiramo prvič
     if izberi ==1:
-        tajnopis,kljuc = railCrypt(cistopis)
+        tajnopis,kljuc = railCrypt(toZakriptiramo)
         vrsta= "Rail fence"
     if izberi ==2:
-        tajnopis,kljuc = transpozicijaStolpcev(cistopis)
+        tajnopis,kljuc = transpozicijaStolpcev(toZakriptiramo)
         vrsta= "Transpozicija stolpcev"
     elif izberi ==3:
-        tajnopis,kljuc = transpozicijaVrstic(cistopis)
+        tajnopis,kljuc = transpozicijaVrstic(toZakriptiramo)
         vrsta= "Transpozicija vrstic"
         
     izberi=random.randint(1, 3)                                         #kriptiramo drugič
@@ -422,7 +498,7 @@ def tt():
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: težko"
     
-    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= cistopis2, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
     
 @app.route('/scoreboard')
 def scoreboard():
