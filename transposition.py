@@ -503,3 +503,25 @@ def tt():
 @app.route('/scoreboard')
 def scoreboard():
     return render_template("transposition.scoreboard.html")
+
+@app.route('/scoreboardS')
+def scoreboardS():
+    return render_template("transposition.scoreboardS.html")
+    
+@app.route('/scoreboardT')
+def scoreboardT():
+    return render_template("transposition.scoreboardT.html")
+
+@app.route("/scoreboard/insert", methods=['POST'])
+def leaderboard_insert():
+    name = request.form['name'].encode('UTF-8')
+    time = int(request.form['time_solved'])
+    time_solved = datetime.utcfromtimestamp(time)
+    difficulty = request.form['difficulty']
+    db = database.dbcon()
+    cur = db.cursor()
+    query = 'INSERT INTO crypto_transposition (name, difficulty, time_solved) VALUES (%s, %s, %s)'
+    cur.execute(query, (name, difficulty, time_solved))
+    cur.execute('COMMIT')
+    cur.close()
+    return json.dumps({'status': 'OK'})
