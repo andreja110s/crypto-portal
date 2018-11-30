@@ -36,6 +36,9 @@
 					<script>
 						document.getElementById("naslov").innerHTML= "{{ imeNaloge }}";
 						
+						var steviloZmot=0;
+						var steviloKlikov=0;
+						
 						var Tezavnost= "{{ tezavnost }}";
 						var vrstaTranspozicije = "{{ vrstaa }}";
 						
@@ -57,7 +60,6 @@
 							var tockePrikaz=50;
 							document.getElementById("opozorilo").innerHTML="Pozor: ob kliku na gumb Namig se ti bo od končnega rezultata odbilo 50 točk!";
 							
-							var steviloKlikov=0;
 							var tocke=0;
 							function prikaziNamig() {
 								if(steviloKlikov==0) {
@@ -115,6 +117,11 @@
 									document.getElementById('nav-bar').style.disabled= true;
 									document.getElementById('top').style.disabled= true;
 									document.getElementById('novaNaloga').style.disabled= true;
+									document.getElementById("zmote").innerHTML="Zmotil/a si se "+steviloZmot+"-krat.";
+									if (steviloKlikov>=2) {
+										steviloKlikov=2;
+									}
+									document.getElementById("namigovv").innerHTML="Porabil/a si "+steviloKlikov+" namigov.";
 									
 								}
 								else {
@@ -126,6 +133,7 @@
 								
 							}
 							else {																						//odg je napacen
+								steviloZmot++;
 								document.getElementById('break').style.display = "block";
 								document.getElementById("pravilnost").innerHTML="Odgovor je napačen, poskusi znova!";
 								document.getElementById("pravilnost").style.color="red";
@@ -205,9 +213,9 @@
 <div id="tajnopis_obrazec">
 	<form>
 	<b><font size="5">ČESTITAM! ODGOVOR JE PRAVILEN.</font></b><br><br>
-		Nalogo ste rešili v X in prejeli Y točk.
-		<br><br>
-		<label for="ime"><b>Ime (tri črke):</b></label>
+		Nalogo ste rešili v X in prejeli Y točk.<div id="zmote"></div><div id="namigovv"></div>
+		<br>
+		<label for="ime"><b>Ime:</b></label>
 		<br>
 		<input type="text" class="mainButtons" id="ime" placeholder="Ime" name="ime" required>
 		<button type="button" class="mainButtons" onclick="posljiPodatke()">Potrdi</button>
