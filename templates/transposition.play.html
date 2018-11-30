@@ -1,7 +1,6 @@
 {% extends "index.html" %}
 {% block body %}
-
-<div class="row">
+<div class="row" id="stran">
    <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading" id="head">
@@ -14,7 +13,9 @@
 			<div class="panel-body">
 				<div class="container-fluid">
 					
+        
 					<p id="tajnopis" class="tajnopis">{{ name }}</p>
+					
 					<br>
 					Originalno sporočilo je:
 					<br>
@@ -85,7 +86,6 @@
 							}
 						}
 						
-						
 						function pravilenOdgovor() {
 							
 							var cisto= "{{ cistoo }}";
@@ -104,14 +104,25 @@
 								
 								document.getElementById('break').style.display = "block";
 								document.getElementById('drugiBreak').style.display = "block";
-								document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
-								document.getElementById("pravilnost").style.color="green";
 								document.getElementById('break').style.display = "block";
 								
-								document.getElementById("novaNaloga").innerHTML="Lestvica";
-								document.getElementById("novaNaloga").onclick = function() { window.location.href = "/transposition/scoreboard"; }
-								
-								document.getElementById("potrdi").style.display="none";
+								if(Tezavnost== "Tekmovanje"){
+									document.getElementById('tajnopis_obrazec').style.display = "block";
+									document.getElementById('stran').style.opacity="0.4";
+									document.getElementById('nav-bar').style.opacity="0.4";
+									document.getElementById('top').style.opacity="0.4";
+									
+									document.getElementById('nav-bar').style.disabled= true;
+									document.getElementById('top').style.disabled= true;
+									document.getElementById('novaNaloga').style.disabled= true;
+									
+								}
+								else {
+									document.getElementById("pravilnost").innerHTML="Čestitam! Odgovor je pravilen.";
+									document.getElementById("pravilnost").style.color="green";
+									document.getElementById("potrdi").innerHTML="Lestvica";
+									document.getElementById("potrdi").onclick = function() { window.location.href = "/transposition/scoreboard"; }
+								}
 								
 							}
 							else {																						//odg je napacen
@@ -165,7 +176,10 @@
 							background-color: #eeeeee; 
 							margin-top: 20px; 
 							padding: 10px;
+							word-break: break-all;
 						}
+						
+						
 					</style>
 					
 				</div>	
@@ -174,5 +188,35 @@
 		</div>
 	</div>
 </div>
-
+<style>
+    #tajnopis_obrazec {
+		position: absolute; 
+		top: 50%;
+		width: 40%;
+		left: 30%;
+		border: 3px solid #467892;
+		border-radius: 10px; 
+		background-color: #eeeeee; 
+		padding: 10px; 
+		text-align: center;
+		display: none;
+	}
+</style>
+<div id="tajnopis_obrazec">
+	<form>
+	<b><font size="5">ČESTITAM! ODGOVOR JE PRAVILEN.</font></b><br><br>
+		Nalogo ste rešili v X in prejeli Y točk.
+		<br><br>
+		<label for="ime"><b>Ime (tri črke):</b></label>
+		<br>
+		<input type="text" class="mainButtons" id="ime" placeholder="Ime" name="ime" required>
+		<button type="button" class="mainButtons" onclick="posljiPodatke()">Potrdi</button>
+	</form>
+</div>
+<script>
+    function posljiPodatke() {
+		var ime=document.getElementById("ime").value;
+	}
+</script>
 {% endblock %}
+
