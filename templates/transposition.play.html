@@ -108,19 +108,26 @@
 								document.getElementById('break').style.display = "block";
 								
 								if(Tezavnost== "Tekmovanje"){
+									document.getElementById('neki').style.display = "block";
 									document.getElementById('tajnopis_obrazec').style.display = "block";
 									document.getElementById('stran').style.opacity="0.4";
+									//document.getElementById('glava').style.zIndex = "-1";
 									document.getElementById('nav-bar').style.opacity="0.4";
+									//document.getElementById('nav-bar').style.zIndex = "-1";
 									document.getElementById('top').style.opacity="0.4";
+									//document.getElementById('top').style.zIndex = "-1";
 									
-									document.getElementById('nav-bar').style.disabled= true;
-									document.getElementById('top').style.disabled= true;
-									document.getElementById('novaNaloga').style.disabled= true;
+									//document.getElementById('nav-bar').style.disabled= true;
+									//document.getElementById('top').style.disabled= true;
+									//document.getElementById('novaNaloga').style.disabled= true;
 									document.getElementById("zmote").innerHTML="Zmotil/a si se "+steviloZmot+"-krat.";
 									if (steviloKlikov>=2) {
 										steviloKlikov=2;
 									}
 									document.getElementById("namigovv").innerHTML="Porabil/a si "+steviloKlikov+" namigov.";
+									
+									var cas =document.getElementById("demo").value;
+									document.getElementById("PorCas").innerHTML="Nalogo ste rešili v "+cas+".";
 									
 								}
 								else {
@@ -193,6 +200,11 @@
 					
 
 					<script>
+					function gibValue() {
+						var now= new Date().getTime();
+						var eee= now-curr;
+						document.getElementById("demo").innerHTML = eee;
+					}
 					// Set the date we're counting down to
 					var d = new Date();
 					var curr = d.getTime();
@@ -230,6 +242,16 @@
 	</div>
 </div>
 <style>
+	.popup {
+	  display: none;
+	  position: fixed;
+	  top: 0;
+	  bottom: 0;
+	  left: 0;
+	  right: 0;
+	  background: rgba(90, 90, 90, 0.5);
+	  z-index: 9999;
+	}
     #tajnopis_obrazec {
 		position: absolute; 
 		top: 50%;
@@ -243,10 +265,11 @@
 		display: none;
 	}
 </style>
-<div id="tajnopis_obrazec">
-	<form>
+
+<div id="neki" class="popup">
+	<form id="tajnopis_obrazec">
 	<b><font size="5">ČESTITAM! ODGOVOR JE PRAVILEN.</font></b><br><br>
-		Nalogo ste rešili v X in prejeli Y točk.<div id="zmote"></div><div id="namigovv"></div>
+		<div id="PorCas"></div><div id="zmote"></div><div id="namigovv"></div>
 		<br>
 		<label for="ime"><b>Ime:</b></label>
 		<br>
@@ -258,6 +281,7 @@
     function posljiPodatke() {
 		var ime=document.getElementById("ime").value;
 	}
+	
 </script>
 {% endblock %}
 
