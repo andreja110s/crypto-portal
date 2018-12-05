@@ -364,6 +364,21 @@ def tvh():
     
     
 #tekmovanje    
+@app.route("/scoreboard/insert", methods=['POST', 'GET'])
+def scoreboard_insert():
+    name = request.form['ime'].encode('UTF-8')
+    difficulty = request.form['difficulty']
+    st_namigov = request.form['st_namigov']
+    st_zmot = request.form['st_zmot']
+    st_tock = request.form['st_tock']
+    db = database.dbcon()
+    cur = db.cursor()
+    query = 'INSERT INTO crypto_transposition (name, difficulty, st_namigov, st_zmot, st_tock) VALUES (%s, %s, %d, %d, %d)'
+    cur.execute(query, (name, difficulty, st_namigov, st_zmot, st_tock))
+    cur.execute('COMMIT')
+    cur.close()
+    return json.dumps({'status': 'OK'})
+
 
 @app.route('/TL')
 def tl():
@@ -392,9 +407,10 @@ def tl():
         vrsta= "Transpozicija vrstic"
         
     TL="Tekmovanje"
+    tt="lahko"
     zaNalogo="Tekmovanje: lahko"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
 
 @app.route('/TS')
 def ts():
@@ -437,9 +453,10 @@ def ts():
     kljuc+="; "
     kljuc+=kljuc2
     TL="Tekmovanje"
+    tt="srednje"
     zaNalogo="Tekmovanje: srednje"
     
-    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
 
 @app.route('/TT')
 def tt():
@@ -497,8 +514,9 @@ def tt():
     
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: težko"
+    tt="težko"
     
-    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta)
+    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
     
 @app.route('/scoreboard')
 def scoreboard():

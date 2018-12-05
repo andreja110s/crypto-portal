@@ -37,6 +37,7 @@
 						
 						var steviloZmot=0;
 						var steviloKlikov=0;
+						var koncneTocke=0;
 						
 						var Tezavnost= "{{ tezavnost }}";
 						var vrstaTranspozicije = "{{ vrstaa }}";
@@ -66,12 +67,14 @@
 									document.getElementById('break').style.display = "block";
 									document.getElementById("prvi").innerHTML= "Vrsta šifriranja: {{ vrstaa }}";
 									tocke+=50;
+									koncneTocke-=50;
 									document.getElementById("opozorilo").innerHTML="Pozor: ob kliku na gumb Namig se ti bo od končnega rezultata odbilo 100 točk!";
 									steviloKlikov++;
 								}
 								else if (steviloKlikov==1) {
 									document.getElementById("drugi").innerHTML= "Ključ: {{ key }}";
 									tocke+=100;
+									koncneTocke-=100;
 									document.getElementById("opozorilo").style.display="none";
 									steviloKlikov++;
 								}
@@ -102,6 +105,7 @@
 								document.getElementById("tretji").style.display="none";
 								document.getElementById("cetrti").style.display="none";
 								document.getElementById("opozorilo").style.display="none";
+								document.getElementById('demo').style.display = "none";
 								
 								document.getElementById('break').style.display = "block";
 								document.getElementById('drugiBreak').style.display = "block";
@@ -117,13 +121,23 @@
 									document.getElementById('top').style.opacity="0.4";
 									//document.getElementById('top').style.zIndex = "-1";
 									
+									document.getElementById('pravilnost').style.display = "none";
+									
 									//document.getElementById('nav-bar').style.disabled= true;
 									//document.getElementById('top').style.disabled= true;
 									//document.getElementById('novaNaloga').style.disabled= true;
 									document.getElementById("zmote").innerHTML="Zmotil/a si se "+steviloZmot+"-krat.";
+									
+									document.getElementById("difficulty").innerHTML= "{{ tt }}";
+									document.getElementById("st_zmt").innerHTML= steviloZmot;
+									koncneTocke+=1000;
+									document.getElementById("st_tck").innerHTML= koncneTocke;
+									
+									
 									if (steviloKlikov>=2) {
 										steviloKlikov=2;
 									}
+									document.getElementById("st_nmg").innerHTML= steviloKlikov;
 									document.getElementById("namigovv").innerHTML="Porabil/a si "+steviloKlikov+" namigov.";
 									
 									var cas =document.getElementById("demo").value;
@@ -267,21 +281,19 @@
 </style>
 
 <div id="neki" class="popup">
-	<form id="tajnopis_obrazec">
+	<form action="./scoreboard/insert" id="tajnopis_obrazec">
 	<b><font size="5">ČESTITAM! ODGOVOR JE PRAVILEN.</font></b><br><br>
+		<input type="hidden" id="difficulty">
+		<input type="hidden" id="st_nmg">
+		<input type="hidden" id="st_zmt">
+		<input type="hidden" id="st_tck">
 		<div id="PorCas"></div><div id="zmote"></div><div id="namigovv"></div>
 		<br>
 		<label for="ime"><b>Ime:</b></label>
 		<br>
-		<input type="text" class="mainButtons" id="ime" placeholder="Ime" name="ime" required>
-		<button type="button" class="mainButtons" onclick="posljiPodatke()">Potrdi</button>
+		<input type="text" class="mainButtons" id="ime" name="ime" placeholder="Ime" required>
+		<button type="submit" class="mainButtons">Potrdi</button>
 	</form>
 </div>
-<script>
-    function posljiPodatke() {
-		var ime=document.getElementById("ime").value;
-	}
-	
-</script>
 {% endblock %}
 
