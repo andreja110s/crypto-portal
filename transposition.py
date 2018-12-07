@@ -364,18 +364,21 @@ def tvh():
     
     
 #tekmovanje    
-@app.route("/scoreboard/insert", methods=['POST', 'GET'])
+@app.route("/scoreboard/insert", methods=['POST'])
 def scoreboard_insert():
     name = request.form['ime'].encode('UTF-8')
     difficulty = request.form['difficulty']
-    st_namigov = request.form['st_namigov']
-    st_zmot = request.form['st_zmot']
-    st_tock = request.form['st_tock']
+    st_n = request.form['st_namigov']
+    st_namigov=int(st_n)
+    st_z = request.form['st_zmot']
+    st_zmot=int(st_z)
+    st_t = request.form['st_tock']
+    st_tock=int(st_t)
     db = database.dbcon()
     cur = db.cursor()
     query = 'INSERT INTO crypto_transposition (name, difficulty, st_namigov, st_zmot, st_tock) VALUES (%s, %s, %d, %d, %d)'
     cur.execute(query, (name, difficulty, st_namigov, st_zmot, st_tock))
-    cur.execute('COMMIT')
+    db.commit()
     cur.close()
     return json.dumps({'status': 'OK'})
 
