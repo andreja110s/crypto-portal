@@ -35,9 +35,9 @@
             </div>
 <div id="leaderboard-container">
 
-    <h10><button type="button" id="L" onclick="prikaziOpcije1()" class="mainButtonsA">LAHKO</button>
-	<button type="button" id="S" onclick="prikaziOpcije2()" class="mainButtonsB">SREDNJE</button>
-	<button type="button" id="T" onclick="prikaziOpcije3()" class="mainButtonsC">TEŽKO</button>
+    <h10><button type="button" id="L" href="{{url_for('transposition.scoreboard', difficulty='lahko')}}" class="mainButtonsA">LAHKO</button>
+	<button type="button" id="S" href="{{url_for('transposition.scoreboard', difficulty='srednje')}}" class="mainButtonsB">SREDNJE</button>
+	<button type="button" id="T" href="{{url_for('transposition.scoreboard', difficulty='tezko')}}" class="mainButtonsC">TEŽKO</button>
 	</h10>
 	
 	<script>

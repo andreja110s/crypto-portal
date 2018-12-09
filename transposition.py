@@ -8,6 +8,7 @@ import re
 import hashlib
 import numpy as np
 import string
+import sys
 
 try:
     basestring
@@ -368,19 +369,17 @@ def tvh():
 def scoreboard_insert():
     name = request.form['ime'].encode('UTF-8')
     difficulty = request.form['difficulty']
-    st_n = request.form['st_namigov']
-    st_namigov=int(st_n)
-    st_z = request.form['st_zmot']
-    st_zmot=int(st_z)
-    st_t = request.form['st_tock']
-    st_tock=int(st_t)
+    st_namigov = request.form['st_namigov']
+    st_zmot = request.form['st_zmot']
+    st_tock = request.form['st_tock']
     db = database.dbcon()
     cur = db.cursor()
-    query = 'INSERT INTO crypto_transposition (name, difficulty, st_namigov, st_zmot, st_tock) VALUES (%s, %s, %d, %d, %d)'
+    print("Ime: "+str(name)+", težavnost: "+str(difficulty)+", namigi: "+str(st_namigov)+", zmote: "+str(st_zmot)+", tocke "+str(st_tock), file=sys.stdout)
+    query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, st_tock) VALUES (%s, %s, %s, %s, %s)'
     cur.execute(query, (name, difficulty, st_namigov, st_zmot, st_tock))
     db.commit()
     cur.close()
-    return json.dumps({'status': 'OK'})
+    return render_template("transposition.izberi.html")
 
 
 @app.route('/TL')
@@ -521,6 +520,17 @@ def tt():
     
     return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
     
-@app.route('/scoreboard')
-def scoreboard():
-    return render_template("transposition.scoreboard.html")
+#@app.route('/scoreboard')
+#def scoreboard():
+#    return render_template("transposition.scoreboard.html")
+    
+@app.route("/scoreboard/<difficulty>")
+def scoreboard(difficulty):
+    db = database.dbcon()
+    cur = db.cursor()
+    table = 'SELECT * FROM crypto_transposition'
+    condition = 'WHERE difficulty = "{}"'.format(difficulty)
+    query = ' '.join([table, condition])
+    cur.execute(query)
+    #dodaj kako razvrsti podatke in to
+    return render_template("transposition.scoreboard.html", users=users)
