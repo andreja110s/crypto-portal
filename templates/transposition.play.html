@@ -164,8 +164,6 @@
 									
 									//document.getElementById("difficulty").value= "{{ tt }}";
 									document.getElementById("st_zmt").value= steviloZmot;
-									koncneTocke+=1000;
-									document.getElementById("st_tck").value= koncneTocke;
 									
 									
 									if (steviloKlikov>=2) {
@@ -186,6 +184,10 @@
 									minut= minut | 0;
 									document.getElementById("PorCas").innerHTML="Nalogo ste rešili v "+minut+" minut, "+sekund+" sekund in "+mili+" milisekund.";
 									document.getElementById("prb_cs").value= cas;
+									
+									koncneTocke+=1000000;
+									koncneTocke-=cas;
+									document.getElementById("st_tck").value= koncneTocke;
 									
 								}
 								else {
