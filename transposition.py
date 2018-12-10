@@ -372,11 +372,13 @@ def scoreboard_insert():
     st_namigov = request.form['st_namigov']
     st_zmot = request.form['st_zmot']
     st_tock = request.form['st_tock']
+    prb_cs = request.form['prb_cs']
+    
     db = database.dbcon()
     cur = db.cursor()
     print("Ime: "+str(name)+", težavnost: "+str(difficulty)+", namigi: "+str(st_namigov)+", zmote: "+str(st_zmot)+", tocke "+str(st_tock), file=sys.stdout)
-    query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, st_tock) VALUES (%s, %s, %s, %s, %s)'
-    cur.execute(query, (name, difficulty, st_namigov, st_zmot, st_tock))
+    query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock) VALUES (%s, %s, %s, %s, %s, %s)'
+    cur.execute(query, (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock))
     db.commit()
     cur.close()
     return render_template("transposition.izberi.html")

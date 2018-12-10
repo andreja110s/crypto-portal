@@ -31,8 +31,37 @@
 					<p id="drugi"></p>
 					<p id="tretji"></p>
 					<p id="cetrti"></p>
+
+					<script>
+						/*var cisto= "{{ cistoo }}";
+							
+						var njihovo= document.getElementById("vnosOdgovora").value;
+					
+						function myFunction(event) {
+						    var n = event.timeStamp;
+						    document.getElementById("timde").innerHTML = n;
+						}
+						function myFunction2(event) {
+							if(njihovo==cisto) {
+							    var n = event.timeStamp;
+							    document.getElementById("timde2").innerHTML = n;
+							}
+						}
+						window.onload = myFunction(event);*/
+					</script>
 					
 					<script>
+						var zacetna=0;
+						
+						window.onload = myFunction(event);
+						function myFunction(event) {
+						    var d = new Date();
+							zacetna=d.getTime();
+						}
+						
+						var koncna=0;
+					
+						
 						document.getElementById("naslov").innerHTML= "{{ imeNaloge }}";
 						//var zacetek = event.timeStamp;
 						var steviloZmot=0;
@@ -100,6 +129,10 @@
 							njihovo=njihovo.toUpperCase();														//damo v upper case
 							if (njihovo == cisto) {																	//odg je pravilen
 								//var konec = event.timeStamp;
+								//koncna = event.timeStamp;
+								var d2 = new Date();
+								koncna =d2.getTime();
+								
 								document.getElementById("namig").style.display="none";
 								document.getElementById("prvi").style.display="none";
 								document.getElementById("drugi").style.display="none";
@@ -141,9 +174,18 @@
 									document.getElementById("st_nmg").value= steviloKlikov;
 									document.getElementById("namigovv").innerHTML="Porabili ste "+steviloKlikov+" namigov.";
 									
-									var cas =document.getElementById("demo").value;
+									//var cas =document.getElementById("demo").value;
 									//var zakljucek=(konec-zacetek)/1000;
-									document.getElementById("PorCas").innerHTML="Nalogo ste rešili v "+cas+".";
+									
+									var cas=koncna-zacetna;
+									var sekund=cas/1000;
+									var mili=cas%1000;
+									var minut=sekund/60;
+									sekund= sekund | 0;
+									sekund=sekund%60;
+									minut= minut | 0;
+									document.getElementById("PorCas").innerHTML="Nalogo ste rešili v "+minut+" minut, "+sekund+" sekund in "+mili+" milisekund.";
+									document.getElementById("prb_cs").value= cas;
 									
 								}
 								else {
@@ -289,6 +331,7 @@
 		<input style="display:none;" type="number" step="1" id="st_nmg" name="st_namigov">
 		<input style="display:none;" type="number" step="1" id="st_zmt" name="st_zmot">
 		<input style="display:none;" type="number" step="1" id="st_tck" name="st_tock">
+		<input style="display:none;" type="number" id="prb_cs" name="prb_cs">
 		<div id="PorCas"></div><div id="zmote"></div><div id="namigovv"></div>
 		<br>
 		<label for="ime"><b>Ime (maksimalno deset znakov):</b></label>
