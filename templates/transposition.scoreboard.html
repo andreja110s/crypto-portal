@@ -51,6 +51,28 @@
 			window.location.href ='/transposition/scoreboard/tezko';
 		}
 	</script>
+	{% for user in users %}
+        <div class="row">
+            <div class="player">
+                <div class="col-1">
+                    <span class="number">{{ loop.index }}.</span>
+                    <span class="name">{{ user[1] }}</span>
+                </div>
+                <div class="col-2">
+                    <span class="time">{{ user[3] }}</span>
+                </div>
+                <div class="col-3">
+                    <span class="time">{{ user[4] }}</span>
+                </div>
+                <div class="col-4">
+                    <span class="time">{{ user[5] }}</span>
+                </div>
+                <div class="col-5">
+                    <span class="time">{{ user[6] }}</span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 	
 	<style>
 		.mainButtonsA {

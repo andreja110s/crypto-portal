@@ -530,17 +530,18 @@ def tt():
 def scoreboard(difficulty):
     db = database.dbcon()
     cur = db.cursor()
-    table = 'SELECT * FROM crypto_transposition'
-    cur.execute(table)
+    table = 'SELECT * FROM crypto_transposition where difficulty=%s'
+    cur.execute(table, (difficulty, ))
     records = cur.fetchall()
     
-    uporabniki=np.array([])
+    #uporabniki=np.array([])
     
-    for row in records:
-        if row[2] == difficulty:
-            uporabniki=np.concatenate([uporabniki, [row[0]]])
+    #for row in records:
+        #if row[2] == difficulty:
+        #    uporabniki=np.concatenate([uporabniki, [row[0]]])
+        #print(row[1])
     cur.close();
     
     #print (uporabniki)
     
-    return render_template("transposition.scoreboard.html")
+    return render_template("transposition.scoreboard.html", users=records)
