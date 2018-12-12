@@ -376,12 +376,12 @@ def scoreboard_insert():
     
     db = database.dbcon()
     cur = db.cursor()
-    print("Ime: "+str(name)+", težavnost: "+str(difficulty)+", namigi: "+str(st_namigov)+", zmote: "+str(st_zmot)+", tocke "+str(st_tock), file=sys.stdout)
+    #print("Ime: "+str(name)+", težavnost: "+str(difficulty)+", namigi: "+str(st_namigov)+", zmote: "+str(st_zmot)+", tocke "+str(st_tock), file=sys.stdout)
     query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock) VALUES (%s, %s, %s, %s, %s, %s)'
     cur.execute(query, (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock))
     db.commit()
     cur.close()
-    return render_template("transposition.izberi.html")
+    return redirect('transposition/scoreboard/lahko')
 
 
 @app.route('/TL')
@@ -518,7 +518,7 @@ def tt():
     
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: težko"
-    tt="težko"
+    tt="tezko"
     
     return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
     
@@ -531,8 +531,16 @@ def scoreboard(difficulty):
     db = database.dbcon()
     cur = db.cursor()
     table = 'SELECT * FROM crypto_transposition'
-    condition = 'WHERE difficulty = "{}"'.format(difficulty)
-    query = ' '.join([table, condition])
-    cur.execute(query)
-    #dodaj kako razvrsti podatke in to
-    return render_template("transposition.scoreboard.html", users=users)
+    cur.execute(table)
+    records = cur.fetchall()
+    
+    uporabniki=np.array([])
+    
+    for row in records:
+        if row[2] == difficulty:
+            uporabniki=np.concatenate([uporabniki, [row[0]]])
+    cur.close();
+    
+    #print (uporabniki)
+    
+    return render_template("transposition.scoreboard.html")

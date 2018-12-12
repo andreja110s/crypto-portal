@@ -35,22 +35,23 @@
             </div>
 <div id="leaderboard-container">
 
-    <h10><button type="button" id="L" href="{{url_for('transposition.scoreboard', difficulty='lahko')}}" class="mainButtonsA">LAHKO</button>
-	<button type="button" id="S" href="{{url_for('transposition.scoreboard', difficulty='srednje')}}" class="mainButtonsB">SREDNJE</button>
-	<button type="button" id="T" href="{{url_for('transposition.scoreboard', difficulty='tezko')}}" class="mainButtonsC">TEŽKO</button>
+    <h10><button type="button" id="L" href="{{url_for('transposition.scoreboard', difficulty='lahko')}}" onclick="naLahko()" class="mainButtonsA">LAHKO</button>
+	<button type="button" id="S" href="{{url_for('transposition.scoreboard', difficulty='srednje')}}" onclick="naSrednje()" class="mainButtonsB">SREDNJE</button>
+	<button type="button" id="T" href="{{url_for('transposition.scoreboard', difficulty='tezko')}}" onclick="naTezko()" class="mainButtonsC">TEŽKO</button>
 	</h10>
 	
 	<script>
-	    function prikaziOpcije1() {
-			window.location.href = "/transposition/scoreboard";
+		function naLahko() {
+			window.location.href ='/transposition/scoreboard/lahko';
 		}
-		function prikaziOpcije2() {
-			window.location.href = "/transposition/scoreboardS";
+		function naSrednje() {
+			window.location.href ='/transposition/scoreboard/srednje';
 		}
-		function prikaziOpcije3() {
-			window.location.href = "/transposition/scoreboardT";
+		function naTezko() {
+			window.location.href ='/transposition/scoreboard/tezko';
 		}
 	</script>
+	
 	<style>
 		.mainButtonsA {
     		border: 2px solid #467892; 
@@ -86,43 +87,6 @@
 		}
 	</style>	
     
-    {% for user in users %}
-        <div class="row">
-        {%  if loop.index < 2 %}
-            <header>
-                <div id="col-1">
-                    <span id="top-number">1.</span>
-                    <img id="top-profile" src="{{ url_for('static', filename = 'images/bell.png') }}">
-                    <span id="top-name">{{ user[0] }}</span>
-                </div>
-                <div id="col-2">
-                    <span id="top-diff">Težavnost</span>
-                    <span id="top-value">{{ user[1] }}</span>
-                </div>
-                <div id="col-3">
-                    <img src="{{ url_for('static', filename = 'images/substitution/clock-icon-s.png') }}" id="clock">
-                    <span id="top-time">{{ user[2] }}</span>
-                </div>
-            </header>
-        {% else %}
-            <div class="player">
-                <div class="col-1">
-                    <span class="number">{{ loop.index }}.</span>
-                    <img class="profile" src={{ url_for('static', filename = 'images/substitution/profile-s.png') }}>
-                    <span class="name">{{ user[0] }}</span>
-                </div>
-                <div class="col-2">
-                    <span class="diff">Težavnost</span>
-                    <span class="value">{{ user[1] }}</span>
-                </div>
-                <div class="col-3">
-                    <img src={{ url_for('static', filename = 'images/substitution/clock-icon-s.png') }} class="clock">
-                    <span class="time">{{ user[2] }}</span>
-                </div>
-            </div>
-        {% endif %}
-        </div>
-    {% endfor %}
 </div>
 </div>
 </div>
