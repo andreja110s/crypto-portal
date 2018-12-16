@@ -544,4 +544,9 @@ def scoreboard(difficulty):
     
     #print (uporabniki)
     
-    return render_template("transposition.scoreboard.html", users=records)
+    tez=difficulty;
+    
+    if difficulty == 'tezko':
+        tez="težko"
+    
+    return render_template("transposition.scoreboard.html", users=records, tez=tez)
