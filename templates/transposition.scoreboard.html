@@ -64,11 +64,11 @@
 
 	<div class="row">
 		<div class="player">
-			<div class="col-sm-2">
-            	<span class="nasl2" style="margin-top: 37.5%;">Mesto</span>
+			<div class="col-sm-1">
+            	<span class="nasl2">Mesto</span>
         	</div>
-        	<div class="col-sm-2">
-            	<span class="nasl2" style="margin-top: 37.5%; margin-left=0 px">Ime</span>
+        	<div class="col-sm-3">
+            	<span class="nasl2">Ime</span>
         	</div>
         	<div class="col-sm-2">
             	<span class="nasl2">Število poskusov</span>
@@ -77,10 +77,10 @@
             	<span class="nasl2">Število zmot</span>
         	</div>
         	<div class="col-sm-2">
-            	<span class="nasl2" style="margin-top: 37.5%;">Čas</span>
+            	<span class="nasl2">Čas</span>
         	</div>
         	<div class="col-sm-2">
-            	<span class="nasl2" style="margin-top: 37.5%;">Točke</span>
+            	<span class="nasl2">Točke</span>
         	</div>
 		</div>
 		
@@ -89,9 +89,11 @@
 	{% for user in users %}
         <div class="row">
             <div class="player">
-                <div class="col-1" style="margin-top: 3.5%;">
+                <div class="col-sm-1" style="margin-top: 3.5%;">
                     <span class="number">{{ loop.index }}.</span>
-                    <span class="name">{{ user[1] }}</span>
+                </div>
+                <div class="col-sm-3" style="margin-top: 5%;">
+                	<span class="name">{{ user[1] }}</span>
                 </div>
                 <div class="col-sm-2" style="margin-top: 5%;">
                 	<span class="name">{{ user[3] }}</span>
