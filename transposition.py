@@ -486,6 +486,27 @@ def ts():
     tt="srednje"
     zaNalogo="Tekmovanje: srednje"
     
+    #vzamemo povprecja za prikaz
+    db = database.dbcon()
+    cur = db.cursor()
+    nnamigov = 'SELECT AVG(st_namigov) FROM crypto_transposition where difficulty="srednje" and id>80;'
+    cur.execute(nnamigov)
+    v=cur.fetchall()[0][0]
+    records1 = int(v)
+    
+    zzmot = 'SELECT AVG(st_zmot) FROM crypto_transposition where difficulty="srednje" and id>80;'
+    cur.execute(zzmot)
+    v=cur.fetchall()[0][0]
+    records2 = int(v)
+    
+    ccasa = 'SELECT AVG(prb_cs) FROM crypto_transposition where difficulty="srednje" and id>80;'
+    cur.execute(ccasa)
+    v=cur.fetchall()[0][0]
+    records3 = int(v)
+    
+    cur.close()
+    
+    
     return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
 
 @app.route('/TT')
@@ -545,6 +566,23 @@ def tt():
     TL="Tekmovanje"
     zaNalogo="Tekmovanje: težko"
     tt="tezko"
+    
+    #vzamemo povprecja za prikaz
+    db = database.dbcon()
+    cur = db.cursor()
+    nnamigov = 'SELECT AVG(st_namigov) FROM crypto_transposition where difficulty="tezko" and id>80;'
+    cur.execute(nnamigov)
+    records1 = int(cur.fetchall()[0][0])
+    
+    zzmot = 'SELECT AVG(st_zmot) FROM crypto_transposition where difficulty="tezko" and id>80;'
+    cur.execute(zzmot)
+    records2 = int(cur.fetchall()[0][0])
+    
+    ccasa = 'SELECT AVG(prb_cs) FROM crypto_transposition where difficulty="tezko" and id>80;'
+    cur.execute(ccasa)
+    records3 = int(cur.fetchall()[0][0])
+    
+    cur.close()
     
     return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
     
