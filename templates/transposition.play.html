@@ -25,7 +25,7 @@
 					<br id="drugiBreak">
 					<p id="pravilnost"></p>
 					<button type="button" id="namig" onclick="prikaziNamig()" class="mainButtons">Namig</button> <b id="opozorilo">Pozor: ob kliku na gumb "Namig" se ti bo od končnega rezultata odbilo X točk!</b>
-					<br>
+					<br id="nekbr">
 					<br id="break" style="display:none;">
 					<p id="prvi"></p>
 					<p id="drugi"></p>
@@ -139,6 +139,7 @@
 								document.getElementById("tretji").style.display="none";
 								document.getElementById("cetrti").style.display="none";
 								document.getElementById("opozorilo").style.display="none";
+								document.getElementById("nekbr").style.display="none";
 								document.getElementById('demo').style.display = "none";
 								
 								document.getElementById('break').style.display = "block";
@@ -184,6 +185,19 @@
 									minut= minut | 0;
 									document.getElementById("PorCas").innerHTML="Nalogo ste rešili v "+minut+" minut, "+sekund+" sekund in "+mili+" milisekund.";
 									document.getElementById("prb_cs").value= cas;
+									document.getElementById("cs_ura").value= minut+":"+sekund+":"+mili;
+									
+									var cas2="{{ ccasa }}";
+									cas2=parseInt(cas2);
+									sekund=cas2/1000;
+									mili=cas2%1000;
+									minut=sekund/60;
+									sekund= sekund | 0;
+									sekund=sekund%60;
+									minut= minut | 0;
+									
+									document.getElementById("nv_cs").innerHTML= minut+":"+sekund+":"+mili+" časa.";
+									
 									
 									koncneTocke+=1000000;
 									koncneTocke-=cas;
@@ -286,7 +300,11 @@
 					    var miliseconds = Math.floor((distance % (1000))/10);
 					    
 					    // Output the result in an element with id="demo"
-					    document.getElementById("demo").innerHTML =  minutes + "m " + seconds + "s " + miliseconds + "ms ";
+						if ("{{ tezavnost }}" == "Tekmovanje") {
+							document.getElementById("demo").innerHTML =  minutes + "m " + seconds + "s " + miliseconds + "ms ";
+						}
+					    
+					    
 					    
 					    // If the count down is over, write some text 
 					    if (distance < 0) {
@@ -334,11 +352,16 @@
 		<input style="display:none;" type="number" step="1" id="st_zmt" name="st_zmot">
 		<input style="display:none;" type="number" step="1" id="st_tck" name="st_tock">
 		<input style="display:none;" type="number" id="prb_cs" name="prb_cs">
+		<input style="display:none;" id="cs_ura" name="cs_ura">
 		<div id="PorCas"></div><div id="zmote"></div><div id="namigovv"></div>
 		<br>
 		<label for="ime"><b>Ime (maksimalno deset znakov):</b></label>
 		<br>
-		<input type="text" class="mainButtons" id="ime" name="ime" placeholder="Ime" required>
+		<input type="text" class="mainButtons" id="ime" name="ime" placeholder="Ime" required><br>
+		V povprečju so ostali igralci za rešitev na isti težavnosti porabili:<br>
+		{{nnamigov}} namigov<br>
+		{{zzmot}} zmot<br>
+		<div id="nv_cs"></div>
 		<button type="submit" class="mainButtons">Potrdi</button>
 	</form>
 </div>

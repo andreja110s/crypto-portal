@@ -67,7 +67,7 @@
 			<div class="col-sm-1">
             	<span class="nasl2" style="margin-top: 35px">Mesto</span>
         	</div>
-        	<div class="col-sm-3">
+        	<div class="col-sm-2">
             	<span class="nasl2" style="margin-top: 35px">Ime</span>
         	</div>
         	<div class="col-sm-2">
@@ -76,23 +76,23 @@
         	<div class="col-sm-2">
             	<span class="nasl2">Število zmot</span>
         	</div>
-        	<div class="col-sm-2">
+        	<div class="col-sm-3">
             	<span class="nasl2" style="margin-top: 35px">Čas</span>
         	</div>
         	<div class="col-sm-2">
             	<span class="nasl2" style="margin-top: 35px">Točke</span>
         	</div>
 		</div>
-		
-	</row>
+	</div>
 
 	{% for user in users %}
+	
         <div class="row">
             <div class="player">
                 <div class="col-sm-1" style="margin-top: 3.5%;">
                     <span class="number">{{ loop.index }}.</span>
                 </div>
-                <div class="col-sm-3" style="margin-top: 5%;">
+                <div class="col-sm-2" style="margin-top: 5%;">
                 	<span class="name">{{ user[1] }}</span>
                 </div>
                 <div class="col-sm-2" style="margin-top: 5%;">
@@ -101,14 +101,16 @@
                 <div class="col-sm-2" style="margin-top: 5%;">
                 	<span class="name">{{ user[4] }}</span>
                 </div>
-                <div class="col-sm-2" style="margin-top: 5%;">
-                	<span class="name">{{ user[5] }}</span>
+                <div class="col-sm-3" style="margin-top: 5%;">
+                	<span id="casU" class="name">{{ user[6] }}</span>
                 </div>
                 <div class="col-sm-2" style="margin-top: 5%;">
-                	<span class="name">{{ user[6] }}</span>
+                	<span class="name">{{ user[7] }}</span>
                 </div>
             </div>
         </div>
+        
+        
     {% endfor %}
 	
 	<style>
@@ -145,6 +147,7 @@
    			left:30%;
 		}
 	</style>	
+	
     
 </div>
 </div>

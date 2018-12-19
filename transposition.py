@@ -373,12 +373,21 @@ def scoreboard_insert():
     st_zmot = request.form['st_zmot']
     st_tock = request.form['st_tock']
     prb_cs = request.form['prb_cs']
+    cs_ura = request.form['cs_ura']
     
     db = database.dbcon()
     cur = db.cursor()
+    
+    #vpisemo povprecje
+    #lhk = 'SELECT st_namigov FROM crypto_transposition where difficulty=%s;'
+    #cur.execute(lhk, (difficulty, ))
+    #records1 = cur.fetchall()
+    #posodobi = 'UPDATE crypto_transposition SET st_namigov=%s where difficulty=%s and id<80'
+    #cur.execute(posodobi, (povp, difficulty))
+    
     #print("Ime: "+str(name)+", težavnost: "+str(difficulty)+", namigi: "+str(st_namigov)+", zmote: "+str(st_zmot)+", tocke "+str(st_tock), file=sys.stdout)
-    query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock) VALUES (%s, %s, %s, %s, %s, %s)'
-    cur.execute(query, (name, difficulty, st_namigov, st_zmot, prb_cs, st_tock))
+    query = 'INSERT INTO `crypto_transposition` (name, difficulty, st_namigov, st_zmot, prb_cs, cs_ura, st_tock) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+    cur.execute(query, (name, difficulty, st_namigov, st_zmot, prb_cs, cs_ura, st_tock))
     db.commit()
     cur.close()
     return redirect('transposition/scoreboard/lahko')
@@ -414,7 +423,24 @@ def tl():
     tt="lahko"
     zaNalogo="Tekmovanje: lahko"
     
-    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
+    #vzamemo povprecja za prikaz
+    db = database.dbcon()
+    cur = db.cursor()
+    nnamigov = 'SELECT AVG(st_namigov) FROM crypto_transposition where difficulty="lahko" and id>80;'
+    cur.execute(nnamigov)
+    records1 = int(cur.fetchall()[0][0])
+    
+    zzmot = 'SELECT AVG(st_zmot) FROM crypto_transposition where difficulty="lahko" and id>80;'
+    cur.execute(zzmot)
+    records2 = int(cur.fetchall()[0][0])
+    
+    ccasa = 'SELECT AVG(prb_cs) FROM crypto_transposition where difficulty="lahko" and id>80;'
+    cur.execute(ccasa)
+    records3 = int(cur.fetchall()[0][0])
+    
+    cur.close()
+    
+    return render_template("transposition.play.html", name=tajnopis, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt, nnamigov=records1, zzmot=records2, ccasa=records3)
 
 @app.route('/TS')
 def ts():
@@ -530,7 +556,7 @@ def tt():
 def scoreboard(difficulty):
     db = database.dbcon()
     cur = db.cursor()
-    table = 'SELECT * FROM crypto_transposition where difficulty=%s'
+    table = 'SELECT * FROM crypto_transposition where difficulty=%s and id>80 ORDER BY st_tock DESC;'
     cur.execute(table, (difficulty, ))
     records = cur.fetchall()
     
