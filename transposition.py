@@ -390,7 +390,8 @@ def scoreboard_insert():
     cur.execute(query, (name, difficulty, st_namigov, st_zmot, prb_cs, cs_ura, st_tock))
     db.commit()
     cur.close()
-    return redirect('transposition/scoreboard/lahko')
+    naslov='transposition/scoreboard/'+ difficulty
+    return redirect(naslov)
 
 
 @app.route('/TL')
@@ -486,7 +487,7 @@ def ts():
     tt="srednje"
     zaNalogo="Tekmovanje: srednje"
     
-    #vzamemo povprecja za prikaz
+    #vzamemo povprecja za prikaz                                                                                                #tuki popravi
     db = database.dbcon()
     cur = db.cursor()
     nnamigov = 'SELECT AVG(st_namigov) FROM crypto_transposition where difficulty="srednje" and id>80;'
@@ -507,7 +508,7 @@ def ts():
     cur.close()
     
     
-    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
+    return render_template("transposition.play.html", name=tajnopis2, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt, nnamigov=records1, zzmot=records2, ccasa=records3)
 
 @app.route('/TT')
 def tt():
@@ -584,7 +585,7 @@ def tt():
     
     cur.close()
     
-    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt)
+    return render_template("transposition.play.html", name=tajnopis3, key=kljuc, cistoo= zaCistopis, tezavnost=TL, imeNaloge= zaNalogo, vrstaa= vrsta, tt=tt, nnamigov=records1, zzmot=records2, ccasa=records3)
     
 #@app.route('/scoreboard')
 #def scoreboard():
